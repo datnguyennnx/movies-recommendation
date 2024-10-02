@@ -1,0 +1,3 @@
+docker compose exec db psql -U user -d movie_recommendation -c "SELECT * FROM alembic_version;" 
+docker compose exec backend sh -c "rm -f /app/alembic/versions/*.py && alembic stamp head"  
+docker compose exec db psql -U user -d movie_recommendation -c "DELETE FROM alembic_version;" 
