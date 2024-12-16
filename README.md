@@ -1,100 +1,136 @@
-# LLM Application Boilerplate
+# Movies Recommender
 
-This project provides a boilerplate for quickly setting up an LLM (Language Model) application with a Next.js frontend and a FastAPI backend. It uses Docker for containerization and includes a Makefile for easy deployment.
+## Project Overview
 
-## Project Structure
+Movies Recommender is an intelligent, LLM-powered movie recommendation system that leverages advanced machine learning techniques to provide personalized movie suggestions through a natural language interface. Datasets **tmdb_5000_credits** and **tmdb_5000_movies**
 
--   `recommender-ui`: Next.js 14 frontend with shadcn UI library
--   `recommender-be`: Python FastAPI backend with WebSocket support
--   `docker-compose.yml`: Docker configuration for the entire stack
--   `Makefile`: Simplified commands for building and running the project
+## Technical Architecture
+
+### Components
+- **Frontend**: Next.js React Application
+- **Backend**: Python FastAPI Service
+- **Database**: PostgreSQL with pgvector
+- **Observability**: LangFuse
+
+### Key Technologies
+- Frontend: TypeScript, Next.js, React
+- Backend: Python, FastAPI, SQLAlchemy, LangChain, LangFuse
+- LLM: LLM Models
+- Database: PostgreSQL, pgvector
+- Authentication: OAuth 2.0
 
 ## Getting Started
 
 ### Prerequisites
+- Docker
+- Docker Compose
+- Make
 
--   Git
--   Docker
--   Docker Compose
--   Make (optional, but recommended)
+### Installation
 
-### Cloning the Repository
-
-To clone this project, run the following command:
-
+1. Clone the repository
 ```bash
-git clone https://github.com/datnguyennnx/llm-app-boilerplate.git
-cd llm-app-boilerplate
+git clone https://github.com/yourusername/movies-recommender.git
+cd movies-recommender
 ```
 
-### Running the Project
-
-We use a Makefile to simplify the Docker commands. Here are the available commands:
-
-1. Build and start the entire stack:
-
-    ```
-    make up
-    ```
-
-2. Stop and remove the containers:
-    ```
-    make down
-    ```
-
-If you don't have Make installed, you can use the Docker Compose commands directly:
-
+2. Start the application
 ```bash
-# Build and start the stack
-docker-compose up -d
-
-# Stop and remove the containers
-docker-compose down
+make up
 ```
 
-## Accessing the Application
+### Preview application
 
-Once the containers are up and running:
+The system can be modeled as a **recommendation funnel** with several key components that can be represented mathematically:
 
--   The frontend will be available at: `http://localhost:3000`
--   The backend API will be available at: `http://localhost:8000`
+**User Interface Flow**
+Let's represent this as a commutative diagram:
+
+$$
+\begin{CD}
+\text{User-Input} @>>> \text{Embbeding Token} @>>> \text{Query-Vector} \\
+@VVV @VVV @VVV \\
+\text{Context-Memory} @>>> \text{Recommendation-Engine} @>>> \text{Movie-Suggestions} \\
+@VVV @VVV @VVV \\
+\text{Evaluation} @>>> \text{Collect-Data} @>>> \text{Model-Update}
+\end{CD}
+$$
+
+**System Architecture Components**
+The relationship between components can be expressed as:
+
+$$
+\text{System} = \{F, B, D, L\}
+$$
+
+Where:
+- $F$: Frontend (Next.js)
+- $B$: Backend (FastAPI)
+- $D$: Database (PostgreSQL)
+- $L$: LLM Components
+
+![](media/Main.png)
+
+![](media/Agent.png)
+
+
+**Mathematical Structure Analysis**
+The timeline can be represented as a directed acyclic graph (DAG) with the following properties:
+
+
+$$
+\begin{aligned}
+\text{Timeline} &= (V, E, T) \\
+\text{where:} & \\
+V &= \text{Set of spans/operations} \\
+E &= \text{Dependencies between operations} \\
+T &= \text{Temporal mapping function}
+\end{aligned}
+$$
+
+**Key Components and Relationships**
+Let's create a commutative diagram showing the flow of operations:
+
+$$
+\begin{CD}
+\text{Message} @>>> \text{Process-User-Message} @>>> \text{AskLLM} \\
+@VVV @VVV @VVV \\
+\text{Movie-Recommendation} @>>> \text{Initiate-Conversation} @>>> \text{Retrieve-Context} \\
+@VVV @VVV @VVV \\
+\text{Generate-Response} @>>> \text{Store-Assistant-Message} @>>> \text{Evaluation-Pipeline}
+\end{CD}
+$$
+
+
+**Key Observations**
+
+1. The system implements a **hierarchical execution model**
+2. The trace exhibits **nested parallelism** in some operations
+3. The system follows a **pipeline architecture** pattern
+
+This trace visualization provides valuable insights into the execution flow and performance characteristics of what appears to be a movie recommendation system built with LangChain.
+
+![](media/Langfuse.png)
+
 
 ## Development
 
-For development purposes, you can run each service individually. Refer to the README files in the `recommender-ui` and `recommender-be` directories for more detailed instructions on running and developing each component separately.
+### Project Structure
+```
+movies-recommender/
+├── recommender-be/   # Backend Python Service
+├── recommender-ui/   # Frontend Next.js Application
+└── .context/         # Project Context Documentation
+```
 
-## Tracing with Langfuse
-
-This project uses Langfuse for tracing LLM interactions. The tracing implementation helps in monitoring, debugging, and evaluating the LLM pipeline. Here's an overview of the tracing setup:
-
-1. The `config/settings.py` file includes the Langfuse configuration variables.
-2. Langfuse is initialized in the main application (`main.py`) and in relevant modules.
-3. The `@observe()` decorator from Langfuse is used on key functions in `pipeline.py`, `metrics.py`, and `evaluator.py` to trace specific operations and evaluations.
-4. Langfuse context is updated within `pipeline.py` to ensure proper tracing throughout the LLM interaction process.
-
-To use Langfuse tracing:
-
-1. Set up a Langfuse account and obtain your API keys.
-2. Set the following environment variables in your `.env` file:
-    - `LANGFUSE_PUBLIC_KEY`: Your Langfuse public key
-    - `LANGFUSE_SECRET_KEY`: Your Langfuse secret key
-    - `LANGFUSE_HOST`: Your Langfuse API endpoint (default is "https://cloud.langfuse.com")
-
-These settings can be configured in the `.env` file or set as environment variables in your deployment environment.
-
-## Customizing the Template
-
-This boilerplate provides a starting point for your LLM application. You can customize the frontend and backend components to fit your specific use case. Some areas you might want to focus on:
-
-1. Modify the frontend UI in the `recommender-ui` directory to match your application's needs.
-2. Update the backend API in the `recommender-be` directory to integrate with your chosen LLM and implement your business logic.
-3. Adjust the Docker and Makefile configurations if you need to add more services or change the existing setup.
-4. Customize the tracing implementation to fit your specific monitoring and debugging needs.
+### Documentation
+Detailed project documentation is available in the `.context` directory, including:
+- Project overview
+- Development guidelines
+- Architecture diagrams
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+1. Read the development guidelines in `.context/docs.md`
+2. Follow the coding standards
+3. Submit pull requests with clear descriptions
