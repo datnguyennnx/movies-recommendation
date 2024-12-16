@@ -204,10 +204,10 @@ def get_evaluation_prompt(user_input: str, recommendation_from_agent: str, conve
     - State and evaluate all assumptions made during the evaluation
 
     ## 6. Final Output
-    - Review for accuracy and adherence to criteria
-    - Provide a detailed breakdown of criterion evaluation with evidence
-    - Reflect on the entire process, identifying potential weaknesses
-    - Analyze edge cases or alternative interpretations
+    - Compare the agent's recommendation to the conversation response
+    - Verify consistency between the recommendation and the response
+    - Identify any discrepancies or contradictions
+    - Assess how well the conversation response supports and explains the recommendation
 
     ## 7. Error Correction
     If errors are identified:
