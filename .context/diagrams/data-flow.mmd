@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant AIModel
+    participant Database
+
+    User->>Frontend: Request Recommendations
+    Frontend->>Backend: Send User Preferences
+    Backend->>AIModel: Process Recommendation Request
+    AIModel->>Database: Query Movie Vectors
+    Database-->>AIModel: Return Matching Movies
+    AIModel-->>Backend: Generate Recommendations
+    Backend-->>Frontend: Send Recommended Movies
+    Frontend->>User: Display Movie Recommendations

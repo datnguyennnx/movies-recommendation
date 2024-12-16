@@ -1,0 +1,21 @@
+flowchart TB
+    subgraph Frontend ["Frontend (recommender-ui)"]
+        UI[User Interface]
+        Chat[Chat Interface]
+        Auth[Authentication]
+    end
+
+    subgraph Backend ["Backend (recommender-be)"]
+        API[FastAPI]
+        ML[ML Recommendation Engine]
+        DB[PostgreSQL with pgvector]
+        Auth2[Authentication Service]
+    end
+
+    User --> UI
+    UI --> Chat
+    Chat --> API
+    API --> ML
+    ML --> DB
+    API --> Auth2
+    Auth --> Auth2
