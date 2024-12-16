@@ -69,9 +69,8 @@ Where:
 - $D$: Database (PostgreSQL)
 - $L$: LLM Components
 
-![](media/Main.png)
-
-![](media/Agent.png)
+![](media/31shots_so.png)
+![](media/288shots_so.png)
 
 
 **Mathematical Structure Analysis**
@@ -110,7 +109,7 @@ $$
 
 This trace visualization provides valuable insights into the execution flow and performance characteristics of what appears to be a movie recommendation system built with LangChain.
 
-![](media/Langfuse.png)
+![](media/311shots_so.png)
 
 
 ## Development
